@@ -45,14 +45,17 @@ flowchart LR
 
 ## Repository layout
 
+All source code is in the [`securevault/`](securevault) folder:
+
 ```
-web/            PHP application (served from /var/www/html)
-  api/          JSON endpoints (auth, files, fingerprint, alerts, admin)
-  config/       db.php, crypto.php (AES + HMAC), auth_guard.php
-kiosk/          kiosk_forwarder.py (laptop) + kiosk_bridge.py (Pi) + start_kiosk.bat
-firmware/       Arduino AS608 kiosk sketch, ESP32 buzzer sketch
-sql/            Extra tables, migrations, append-only log triggers
-tools/          Sensor test script, local alert watcher
+securevault/
+  web/          PHP application (served from /var/www/html)
+    api/        JSON endpoints (auth, files, fingerprint, alerts, admin)
+    config/     db.php, crypto.php (AES + HMAC), auth_guard.php
+  kiosk/        kiosk_forwarder.py (laptop) + kiosk_bridge.py (Pi) + start_kiosk.bat
+  firmware/     Arduino AS608 kiosk sketch, ESP32 buzzer sketch
+  sql/          Extra tables, migrations, append-only log triggers
+  tools/        Sensor test script, local alert watcher
 ```
 
 ## Tech stack
@@ -61,11 +64,11 @@ PHP 8 · MariaDB · Apache · Raspberry Pi OS · Cloudflare Tunnel · ClamAV · 
 
 ## Setup (summary)
 
-1. Copy `web/` to the web root and create the `secure_file_storage` database. Then run the scripts in `sql/` in this order: `access_requests.sql`, `fingerprint_db_templates.sql`, `migrations.sql`, `logs_append_only.sql`.
+1. Copy `securevault/web/` to the web root and create the `secure_file_storage` database. Then run the scripts in `securevault/sql/` in this order: `access_requests.sql`, `fingerprint_db_templates.sql`, `migrations.sql`, `logs_append_only.sql`.
 2. Copy `securevault-secrets.conf.example` to `/etc/apache2/conf-available/securevault-secrets.conf`, fill in your own keys (`openssl rand -hex 32`), `chmod 600`, then `a2enconf securevault-secrets`.
 3. Install ClamAV: `sudo apt install clamav-daemon`.
-4. Flash `firmware/fingerprint_kiosk` to the Arduino and set `DEVICE_KEY` in `kiosk/kiosk_bridge.py`.
-5. Optionally flash `firmware/esp32_buzzer` with your WiFi details and `BUZZER_KEY`.
+4. Flash `securevault/firmware/fingerprint_kiosk` to the Arduino and set `DEVICE_KEY` in `securevault/kiosk/kiosk_bridge.py`.
+5. Optionally flash `securevault/firmware/esp32_buzzer` with your WiFi details and `BUZZER_KEY`.
 
 > No keys, passwords or user data are included in this repository. Every secret has a `CHANGE_ME` placeholder or is read from the server environment.
 
