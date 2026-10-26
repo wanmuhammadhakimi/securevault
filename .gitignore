@@ -1,0 +1,25 @@
+# Secrets - never commit
+securevault-secrets.conf
+*.env
+.env*
+
+# User data
+web/uploads_encrypted/*
+!web/uploads_encrypted/.htaccess
+web/uploads/avatars/*
+!web/uploads/avatars/.gitkeep
+web/alert_state.json
+web/api/alert_state.json
+*.sql.gz
+*dump*.sql
+
+# Fingerprint templates / test captures
+*.bin
+
+# Backups & build junk
+*.bak*
+__pycache__/
+*.pyc
+vendor/
+.DS_Store
+Thumbs.db
